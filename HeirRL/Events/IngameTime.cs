@@ -9,8 +9,22 @@ namespace HeirRL.Events
 {
     public class IngameTime: GameComponent
     {
+        public static IngameTime Instance
+        {
+            get
+            {
+                var currentScene = SceneManager.Current;
+                if (currentScene == null) throw new NullReferenceException("Current scene can't be null.");
+
+                var levelScene = currentScene as SceneLevel;
+                if (levelScene == null) throw new Exception("To get an scene time, scene must be a level.");
+
+                return levelScene.Time;
+            }
+        }  
+
         public long Time { get; private set; }
-        public int TickSinceLastUpdate { get; private set; }
+        public int TickSinceLastIncrement { get; private set; }
 
         public event EventHandler OnTimeIncrement;
 
@@ -23,13 +37,13 @@ namespace HeirRL.Events
 
         public override void Update(GameTime gameTime)
         {
-            TickSinceLastUpdate++;
+            TickSinceLastIncrement++;
         }
 
         public void Increment(int Value)
         {
             Time += Value;
-            TickSinceLastUpdate = 0;
+            TickSinceLastIncrement = 0;
 
             if (OnTimeIncrement != null) OnTimeIncrement(this, null);
         }

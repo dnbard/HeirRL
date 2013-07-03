@@ -46,6 +46,14 @@ namespace HeirRL.Level
             return Grid[x, y];
         }
 
+        public GridElement this[int x, int y]
+        {
+            get
+            {
+                return GetGridElement(x, y);
+            }
+        }
+
         private void CalculateNearbyElements()
         {
             foreach (var gridElement in Grid)

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace HeirRL.Graphics
 {
-    class StaticCamera: GameComponent
+    public class StaticCamera: GameComponent
     {
         public float X { get; set; }
         public float Y { get; set; }

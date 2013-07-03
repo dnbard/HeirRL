@@ -26,22 +26,37 @@ namespace HeirRL.Source
         private KeyboardState _current = Keyboard.GetState();
         private KeyboardState _old;
 
+        private TimeSpan _lastAction = TimeSpan.FromMilliseconds(0);
+        private TimeSpan _currentTime = TimeSpan.FromMilliseconds(0);
+        private TimeSpan _actionDelay = TimeSpan.FromMilliseconds(350);
+
         private KeyboardManager() : base(Program.Game) { }
 
         public override void Update(GameTime gameTime)
         {
             _old = _current;
             _current = Keyboard.GetState();
+            _currentTime = Program.Game.GameTime;
         }
 
-        public bool IsKeyDown(Keys key)
+        public static bool IsKeyDown(Keys key)
         {
-            return _current.IsKeyDown(key);
+            var self = Instance;
+            return self._current.IsKeyDown(key) && 
+                self._currentTime - self._lastAction >= self._actionDelay;
         }
 
-        public bool IsKeyPress(Keys key)
+        public static bool IsKeyPress(Keys key)
         {
-            return _current.IsKeyUp(key) && _old.IsKeyDown(key);
+            var self = Instance;
+            return Instance._current.IsKeyUp(key) && Instance._old.IsKeyDown(key) &&
+                self._currentTime - self._lastAction >= self._actionDelay;
+        }
+
+        public static void RegisterKeyAction()
+        {
+            var self = Instance;
+            self._lastAction = Program.Game.GameTime;
         }
     }
 }

@@ -2,35 +2,60 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using HeirRL.Graphics;
-using HeirRL.Level;
-using HeirRL.Source;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using HeirRL.Graphics;
+using HeirRL.Level;
+using HeirRL.Source;
+
 namespace HeirRL.Characters
 {
-    class Character : VisualComponent
+    public class Character : VisualComponent
     {
-        public GridElement Parent { get; protected set; }
+        private GridElement _parent;
+        public GridElement Parent
+        {
+            get { return _parent; }
+            set
+            {
+                _parent = value;
+                _targetX = value.X;
+                _targetY = value.Y;
+                Layer = CalculateLayer();
+            }
+        }
 
-        public Character()
+        private float _targetX = 0, _targetY = 0;
+
+        public int MovementCost { get; set; }
+
+        private static float CharacterLayerHeight = 0.85f;
+
+        public Character(GridElement location)
         {
             Texture = ImagesManager.Get("chars-default");
             TextureKey = "full";
             Origin = Origin.Center;
 
-            Layer = 0.85f /*- column * 0.0001f*/;
+            _parent = location;
+
+            Layer = CalculateLayer();
             Scale = 0.75f;
+        }
+
+        private float CalculateLayer()
+        {
+            return CharacterLayerHeight - Parent.Column * 0.0001f;
         }
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            var keyboard = Keyboard.GetState();
-            if (keyboard.IsKeyDown(Keys.Right))
-            {
-                X += 48;
-            }
-        }
+            if (_targetX > X) X--;
+            else if (_targetX < X) X++;
+
+            if (_targetX > Y) X--;
+            else if (_targetX < Y) X++;
+        }        
     }
 }

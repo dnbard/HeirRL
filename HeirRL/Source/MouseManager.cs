@@ -24,10 +24,7 @@ namespace HeirRL.Source
             }
         }
 
-        private MouseManager() : base(Program.Game)
-        {
-            
-        }
+        private MouseManager() : base(Program.Game) { }
 
         private MouseState _mouseCurrent;
         private MouseState _mouseLast;

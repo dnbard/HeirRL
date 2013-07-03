@@ -23,6 +23,8 @@ namespace HeirRL
         }
 
         public static GameMain Game;
+
+        public static Random Random = new Random();
     }
 #endif
 }
