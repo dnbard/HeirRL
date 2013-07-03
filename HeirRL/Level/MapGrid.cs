@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace HeirRL.Level
 {
-    class MapGrid : DrawableGameComponent
+    public class MapGrid : DrawableGameComponent
     {
         public int Width { get; private set; }
         public int Height { get; private set; }
