@@ -55,6 +55,20 @@ namespace HeirRL.Scenes
             }
         }
 
+        private Scene _modal;
+        public static Scene Modal
+        {
+            get { return instance._modal; }
+            set
+            {
+                if (value is SceneLevel) throw new ArgumentException("Level can't be a modal scene.");
+
+                instance._modal = value;
+                if (!instance.scenes.ContainsValue(value))
+                    instance.scenes.Add(value.Name, value);                
+            }
+        }
+
         public static Scene Get(string name)
         {
             var dictionary = instance.scenes;
@@ -123,14 +137,19 @@ namespace HeirRL.Scenes
         GameTime LastDraw = new GameTime(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(0));
         public static new void Draw(GameTime gameTime)
         {
-            instance.LastDraw = gameTime;
-            instance._current.Draw(gameTime);
+            var manager = instance;
+            manager.LastDraw = gameTime;
+            manager._current.Draw(gameTime);
+            manager._modal.Draw(gameTime);
         }
 
         public static new void Update(GameTime gameTime)
         {
-            instance.LastUpdate = gameTime;
-            instance._current.Update(gameTime);
+            var manager = instance;
+            manager.LastUpdate = gameTime;
+            if (manager._modal != null)
+                manager._modal.Update(gameTime);
+            else manager._current.Update(gameTime);
         }
 
         public static void RemoveElement(IGameComponent element)
