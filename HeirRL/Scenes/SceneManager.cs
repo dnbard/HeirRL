@@ -140,7 +140,8 @@ namespace HeirRL.Scenes
             var manager = instance;
             manager.LastDraw = gameTime;
             manager._current.Draw(gameTime);
-            manager._modal.Draw(gameTime);
+            if (manager._modal != null)
+                manager._modal.Draw(gameTime);
         }
 
         public static new void Update(GameTime gameTime)

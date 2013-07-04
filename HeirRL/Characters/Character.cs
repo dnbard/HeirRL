@@ -25,7 +25,8 @@ namespace HeirRL.Characters
             get { return _parent; }
             set
             {
-                _parent.Creature = null;
+                if (_parent != null)
+                    _parent.Creature = null;
                 value.Creature = this;
                 _parent = value;                
                 _targetX = value.X;
@@ -69,11 +70,17 @@ namespace HeirRL.Characters
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            if (_targetX > X) X--;
-            else if (_targetX < X) X++;
-
-            if (_targetX > Y) X--;
-            else if (_targetX < Y) X++;           
+            if (_targetX != 0)
+            {
+                if (_targetX < X) X--;
+                else if (_targetX > X) X++;
+            }
+        
+            if (_targetY != 0)
+            {
+                if (_targetY < Y) Y--;
+                else if (_targetY > Y) Y++;
+            }   
         }
 
         protected void Remove()
