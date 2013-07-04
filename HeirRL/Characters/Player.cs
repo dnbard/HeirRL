@@ -36,6 +36,8 @@ namespace HeirRL.Characters
             : base(location)
         {
             Parent.Creature = this;
+            IsPlayer = true;
+            IsHostile = false;
 
             #region Movement Dictionary Set
             MovementDictionary.Add(Keys.W, (int)MapGridLinkage.North);
@@ -83,20 +85,22 @@ namespace HeirRL.Characters
                     var moveTo = Parent.NearbyElements[pair.Value];
                     if (moveTo != null)
                     {
+                        var creature = moveTo.Creature;
                         if (moveTo.Passable)
-                        {
-                            Parent.Creature = null;
-                            moveTo.Creature = this;
+                        {   
                             Parent = moveTo;
-                            
-                            IngameTime.Instance.Increment(MovementCost);
-                            KeyboardManager.RegisterKeyAction();
-                            break;
+                            IngameTime.Instance.Increment(MovementCost);                                                        
                         }
-                        else if (moveTo.Creature != null)
+                        else if (creature != null)
                         {
-
+                            if (creature.IsHostile)
+                            {
+                                DoMeleeDamage(moveTo.Creature);
+                                IngameTime.Instance.Increment(MeleeAttackCost);
+                            }
                         }
+                        KeyboardManager.RegisterKeyAction();
+                        break;
                     }
                 }            
 
@@ -107,6 +111,6 @@ namespace HeirRL.Characters
                     KeyboardManager.RegisterKeyAction();
                     break;
                 }
-        }
+        }            
     }
 }

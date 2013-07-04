@@ -38,6 +38,8 @@ namespace HeirRL.Scenes
 
         private Dictionary<string, Scene> scenes;
 
+        public static SceneLevel CurrentLevel { get; protected set; }
+
         private Scene _current;
         public static Scene Current
         {
@@ -47,6 +49,9 @@ namespace HeirRL.Scenes
                 instance._current = value;
                 if (!instance.scenes.ContainsValue(value))
                     instance.scenes.Add(value.Name,value);
+
+                var level = value as SceneLevel;
+                if (level != null) CurrentLevel = level;
             }
         }
 

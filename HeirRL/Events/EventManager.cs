@@ -24,13 +24,10 @@ namespace HeirRL.Events
         {
             get
             {
-                var currentScene = SceneManager.Current;
-                if (currentScene == null) throw new NullReferenceException("Current scene can't be null.");
-                
-                var levelScene = currentScene as SceneLevel;
-                if (levelScene == null) throw new Exception("To set an event current scene must be a level.");
+                var cLevel = SceneManager.CurrentLevel;
+                if (cLevel == null) throw new NullReferenceException("Current level can't be null.");
 
-                return levelScene.EventManager;
+                return cLevel.EventManager;
             }
         }    
 

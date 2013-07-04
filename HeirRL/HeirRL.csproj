@@ -36,7 +36,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\CharacterAttribute.cs" />
+    <Compile Include="Characters\DamageHolder.cs" />
+    <Compile Include="Characters\DamageType.cs" />
     <Compile Include="Characters\Player.cs" />
+    <Compile Include="Characters\RoleplayCharacter.cs" />
     <Compile Include="Data\Database.cs" />
     <Compile Include="Data\Service.cs" />
     <Compile Include="Data\SQLiteConnector.cs" />
